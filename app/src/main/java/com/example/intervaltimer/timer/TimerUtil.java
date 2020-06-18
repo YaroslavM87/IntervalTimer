@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
-import com.example.intervaltimer.activityElements.TimerListAdapter;
+import com.example.intervaltimer.activityElements.AdapterForTimerList;
 
 public class TimerUtil {
 
@@ -17,7 +17,7 @@ public class TimerUtil {
     private long countDownInterval;
     private boolean isFirstLaunch;
     private ArrayList<Timer> copyOfTimerList;
-    private TimerListAdapter adapter;
+    private AdapterForTimerList adapter;
 
     {
         initialTime = 0L;
@@ -31,15 +31,26 @@ public class TimerUtil {
         timerUnderConfig = createTimer(textViewForTimerUnderConfig);
     }
 
-
-
-    /* API of this class */
-
+    /**
+     * Условной конструкцией 1го ур. влож. реализован фильтр для обхода ситуации, когда таймер,
+     * находящийся в списке, после вызова на редактирование {@link #chooseTimerForConfiguration(int index)}
+     * добавляют вызовом {@link #addTimerToList()} в тот же список, что приводит к 2м ссылкам
+     * на один и тот же объект
+     */
     public void addTimerToList() {
-        int index = timerList.getSizeOfTimerList();
-        timerList.addTimerInList(index, timerUnderConfig);
-        timerUnderConfig.setTimerID(index);
-        timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+
+        if(timerUnderConfig.getTimerID() == -1) {
+            if(timerUnderConfig.getTimerLengthAtTheMoment() > 0L) {
+                timerList.addTimerInList(timerList.getSizeOfTimerList(), timerUnderConfig);
+                timerUnderConfig.setTimerID(timerList.getSizeOfTimerList());
+                timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+            }
+
+        } else {
+            if(timerUnderConfig.getTimerLengthAtTheMoment() > 0L) {
+                timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+            }
+        }
     }
 
     public void deleteTimer(Timer timer) {
@@ -89,12 +100,21 @@ public class TimerUtil {
 
     public void stopTimer() {
         if(timerList.timerListIsNotEmpty()) {
-            refreshTimeValue(0L);
-            countDownTimer.cancel();
+            //refreshTimeValue(0L);
+            if(countDownTimer != null) {countDownTimer.cancel();}
             isFirstLaunch = true;
             timerList.clearTimerList();
             adapter.notifyDataSetChanged();
         } // else ( notify() )
+    }
+
+    public void chooseTimerForConfiguration(int index) {
+        timerUnderConfig = timerList.getTimer(index);
+        timerUnderConfig.getTextViewForTimer().refreshTimerLengthInTextField(
+                timerUnderConfig.timeValueToFormattedRepresentation(
+                        timerUnderConfig.getTimerLengthAtTheMoment()
+                )
+        );
     }
 
     public void configureTimer(long changeForTimerLength) {
@@ -113,20 +133,21 @@ public class TimerUtil {
         return timerList.getTimerList();
     }
 
-    public void setTimerAdapter(TimerListAdapter adapter) {
+    public void setTimerAdapter(AdapterForTimerList adapter) {
         this.adapter = adapter;
     }
 
 
-
-    /* inner methods of this class*/
-
+    /**
+     * вызов {@code timer.setTimerID(-1)} необходим для работы фильтра в {@link #addTimerToList()}
+     */
     private Timer createTimer(TextView textView) {
         Timer timer = new Timer();
         timer.setTextViewForTimer(new TextViewForTimer(textView));
         timer.setTimerLength(initialTime);
         timer.getTextViewForTimer().
                 refreshTimerLengthInTextField(timer.timeValueToFormattedRepresentation(initialTime));
+        timer.setTimerID(-1);
         return timer;
     }
 
@@ -135,10 +156,12 @@ public class TimerUtil {
     }
 
     private void refreshTimeValue(long currentTimeValue) {
-        operatedTimer.setTimerLength(currentTimeValue);
-        operatedTimer.getTextViewForTimer().refreshTimerLengthInTextField(
-                operatedTimer.timeValueToFormattedRepresentation(currentTimeValue)
-        );
+        if(operatedTimer != null) {
+            operatedTimer.setTimerLength(currentTimeValue);
+            operatedTimer.getTextViewForTimer().refreshTimerLengthInTextField(
+                    operatedTimer.timeValueToFormattedRepresentation(currentTimeValue)
+            );
+        }
     }
 }
 

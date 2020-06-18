@@ -116,12 +116,12 @@
         android:background="#00BCD4"
         android:onClick="timerStop"
         android:text="@string/stopTimer"
-        android:textSize="30sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addTimer" />
 
     <Button
-        android:id="@+id/startButton"
+        android:id="@+id/startTimer"
         android:layout_width="138dp"
         android:layout_height="80dp"
         android:layout_marginTop="12dp"

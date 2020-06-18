@@ -3,6 +3,6 @@
     <string name="plus">+</string>
     <string name="minus">-</string>
     <string name="addTimer">Add to list</string>
-    <string name="stopTimer">Stop</string>
+    <string name="stopTimer">Stop and reset</string>
     <string name="startTimer">start</string>
 </resources>
