@@ -8,27 +8,32 @@ import com.example.intervaltimer.activityElements.AdapterForTimerList;
 
 public class TimerUtil {
 
+    private TimerList timerList;
+    private ArrayList<Timer> copyOfTimerList;
+
     private Timer timerUnderConfig;
     private Timer operatedTimer;
-    private TextView textViewForTimerUnderConfig;
-    private TimerList timerList;
+    private TextView textViewForTimerUnderConfigIdAndType;
+    private TextView textViewForTimerUnderConfigTimeValue;
+
     private CountDownTimer countDownTimer;
     private long initialTime;
     private long countDownInterval;
     private boolean isFirstLaunch;
-    private ArrayList<Timer> copyOfTimerList;
+    private boolean timerIsRunning;
+
     private AdapterForTimerList adapter;
 
     {
         initialTime = 0L;
         countDownInterval = 1000L;
-        isFirstLaunch = true;
     }
 
-    public TimerUtil(TextView textView) {
-        textViewForTimerUnderConfig = textView;
+    public TimerUtil(TextView idAndType, TextView timeValue) {
         timerList = new TimerList();
-        timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+        textViewForTimerUnderConfigIdAndType = idAndType;
+        textViewForTimerUnderConfigTimeValue = timeValue;
+        setInitialConditions();
     }
 
     /**
@@ -39,93 +44,69 @@ public class TimerUtil {
      */
     public void addTimerToList() {
 
-        if(timerUnderConfig.getTimerID() == -1) {
+        if(timerUnderConfig.getTimerId() == -1) {
             if(timerUnderConfig.getTimerLengthAtTheMoment() > 0L) {
                 timerList.addTimerInList(timerList.getSizeOfTimerList(), timerUnderConfig);
-                timerUnderConfig.setTimerID(timerList.getSizeOfTimerList());
-                timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+                timerUnderConfig.updateTimerId(timerList.getSizeOfTimerList() - 1);
+                timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+                adapter.notifyDataSetChanged();
             }
 
         } else {
             if(timerUnderConfig.getTimerLengthAtTheMoment() > 0L) {
-                timerUnderConfig = createTimer(textViewForTimerUnderConfig);
+                timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
             }
         }
     }
 
+    public void chooseTimerForConfiguration(int index) {
+        if(index != timerList.getIndexOfTimerInList(timerUnderConfig)) {
+            timerUnderConfig = timerList.getTimerFromList(index);
+            updateTimerValuesInTextViews(timerUnderConfig);
+        }
+    }
+
+    public void configureTimer(long changeForTimerLength) {
+        long newTimerLength = changeForTimerLength + timerUnderConfig.getTimerLengthAtTheMoment();
+        if(newTimerLength >= 1000L) {
+            timerUnderConfig.setTimerLength(newTimerLength);
+        } else {
+            if(timerUnderConfig.getTimerLengthAtTheMoment() > 0L) timerUnderConfig.setTimerLength(1000L);
+        }
+        updateTimerValues(timerUnderConfig, timerUnderConfig.getTimerLengthAtTheMoment());
+        adapter.notifyDataSetChanged();
+    }
+
     public void deleteTimer(Timer timer) {
+        int indexOfTimerToDelete = timerList.getIndexOfTimerInList(timer);
         timerList.removeTimerFromList(timer);
+        adapter.notifyItemRemoved(indexOfTimerToDelete);
     }
 
     public void deleteTimer(int index) {
         timerList.removeTimerFromList(index);
+        adapter.notifyItemRemoved(index);
     }
 
-    public void runTimer() {
-
-        if(timerList.timerListIsNotEmpty()) {
-
-            if(isFirstLaunch) {
-                setNextTimerAsOperated();
+    public void launchSetOfTimers() {
+        if(!timerIsRunning) {
+            if (timerList.getTimerFromList(timerList.getSizeOfTimerList() - 1).getTimerType() != TimerType.REST_TIME & isFirstLaunch) {
+                setNextTimerAsOperated(0);
                 isFirstLaunch = false;
+                timerIsRunning = true;
+                runTimer();
             }
-
-            timerList.removeTimerFromList(operatedTimer);
-            adapter.notifyDataSetChanged();
-
-            countDownTimer = new CountDownTimer(operatedTimer.getTimerLengthAtTheMoment(), countDownInterval) {
-
-                public void onTick(long millisUntilFinished) {
-                    refreshTimeValue(millisUntilFinished);
-                }
-
-                public void onFinish() {
-
-                    refreshTimeValue(0L);
-
-                    if(timerList.getSizeOfTimerList() - 1 == timerList.getIndexOfTimer(operatedTimer)) {
-                        timerList.clearTimerList();
-                        isFirstLaunch = true;
-                        this.cancel();
-
-                    } else {
-                        setNextTimerAsOperated();
-                        runTimer();
-                    }
-                }
-            }.start();
-
-        } // else ( notify() )
+        }
     }
 
-    public void stopTimer() {
-        if(timerList.timerListIsNotEmpty()) {
-            //refreshTimeValue(0L);
-            if(countDownTimer != null) {countDownTimer.cancel();}
-            isFirstLaunch = true;
+    public void stopTimerAndResetTimerList() {
+        if(timerIsRunning) {
+            updateTimerValues(operatedTimer, 0L);
+            if (countDownTimer != null) countDownTimer.cancel();
             timerList.clearTimerList();
+            setInitialConditions();
             adapter.notifyDataSetChanged();
-        } // else ( notify() )
-    }
-
-    public void chooseTimerForConfiguration(int index) {
-        timerUnderConfig = timerList.getTimer(index);
-        timerUnderConfig.getTextViewForTimer().refreshTimerLengthInTextField(
-                timerUnderConfig.timeValueToFormattedRepresentation(
-                        timerUnderConfig.getTimerLengthAtTheMoment()
-                )
-        );
-    }
-
-    public void configureTimer(long changeForTimerLength) {
-
-        timerUnderConfig.setTimerLength(changeForTimerLength);
-
-        timerUnderConfig.getTextViewForTimer().refreshTimerLengthInTextField(
-                timerUnderConfig.timeValueToFormattedRepresentation(
-                        timerUnderConfig.getTimerLengthAtTheMoment()
-                )
-        );
+        }
     }
 
     // method for recycler view adapter at MainActivity
@@ -133,37 +114,97 @@ public class TimerUtil {
         return timerList.getTimerList();
     }
 
-    public void setTimerAdapter(AdapterForTimerList adapter) {
+    public void setAdapter(AdapterForTimerList adapter) {
         this.adapter = adapter;
     }
 
-
-    /**
-     * вызов {@code timer.setTimerID(-1)} необходим для работы фильтра в {@link #addTimerToList()}
-     */
-    private Timer createTimer(TextView textView) {
-        Timer timer = new Timer();
-        timer.setTextViewForTimer(new TextViewForTimer(textView));
-        timer.setTimerLength(initialTime);
-        timer.getTextViewForTimer().
-                refreshTimerLengthInTextField(timer.timeValueToFormattedRepresentation(initialTime));
-        timer.setTimerID(-1);
-        return timer;
+    public boolean isTimerRunning() {
+        return timerIsRunning;
     }
 
-    private void setNextTimerAsOperated() {
-        operatedTimer = timerList.getTimer(0);
+
+    private void setInitialConditions() {
+        addInitialTimerInList(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+        timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+        isFirstLaunch = true;
+        timerIsRunning = false;
     }
 
-    private void refreshTimeValue(long currentTimeValue) {
-        if(operatedTimer != null) {
-            operatedTimer.setTimerLength(currentTimeValue);
-            operatedTimer.getTextViewForTimer().refreshTimerLengthInTextField(
-                    operatedTimer.timeValueToFormattedRepresentation(currentTimeValue)
-            );
+    private void addInitialTimerInList(TextView idAndType, TextView timeValue) {
+        Timer newTimer = new Timer(5000L, TimerType.TIME_TO_START, 0);
+        newTimer.setTextViewForTimer(new TextViewForTimer(idAndType, timeValue));
+        timerList.addTimerInList(0, newTimer);
+    }
+
+    private Timer createTimer(TextView idAndType, TextView timeValue) {
+        Timer newTimer;
+
+        if(
+                timerList.getTimerFromList(timerList.getSizeOfTimerList() - 1).getTimerType() == TimerType.TIME_TO_START ||
+                timerList.getTimerFromList(timerList.getSizeOfTimerList() - 1).getTimerType() == TimerType.REST_TIME
+        ) {
+            newTimer = new Timer(initialTime, TimerType.WORK_TIME, -1);
+
+        } else {
+            newTimer = new Timer(initialTime, TimerType.REST_TIME, -1);
+        }
+
+        newTimer.setTextViewForTimer(new TextViewForTimer(idAndType, timeValue));
+        updateTimerValues(newTimer, initialTime);
+
+        return newTimer;
+    }
+
+    private void runTimer() {
+        deleteTimer(operatedTimer);
+        countDownTimer = new CountDownTimer(operatedTimer.getTimerLengthAtTheMoment(), countDownInterval) {
+
+            public void onTick(long millisUntilFinished) {
+                updateTimerValues(operatedTimer, millisUntilFinished);
+            }
+
+            public void onFinish() {
+                updateTimerValues(operatedTimer, 0L);
+
+                if(isLastTimerInList(operatedTimer)) {
+                    timerList.clearTimerList();
+                    setInitialConditions();
+                    adapter.notifyDataSetChanged();
+                    this.cancel();
+
+                } else {
+                    setNextTimerAsOperated(0);
+                    runTimer();
+                }
+            }
+        }.start();
+    }
+
+    private void setNextTimerAsOperated(int index) {
+        operatedTimer = timerList.getTimerFromList(index);
+    }
+
+    private void updateTimerValues(Timer timer, long currentTimeValue) {
+        if(timer != null) {
+            timer.setTimerLength(currentTimeValue);
+            updateTimerValuesInTextViews(timer);
         }
     }
+
+    private void updateTimerValuesInTextViews(Timer timer) {
+            String id = timer.getTimerIdAsString();
+            String type = timer.getTimerType().toString();
+            String timeValue = timer.timeValueToFormattedRepresentation(timer.getTimerLengthAtTheMoment());
+            timer.updateTimerParamInTextView(id, type, timeValue);
+    }
+
+    private boolean isLastTimerInList(Timer timer) {
+        return timerList.getSizeOfTimerList() - 1 == timerList.getIndexOfTimerInList(timer);
+    }
 }
+
+
+
 
 //copyOfTimerList = (ArrayList<Timer>) timerList.getTimerList().clone();
 

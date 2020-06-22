@@ -16,7 +16,8 @@ import com.example.intervaltimer.timer.TimerUtil;
 public class MainActivity extends AppCompatActivity {
 
     TimerUtil timerUtil;
-    TextView textViewForTimerUnderConfig;
+    TextView timeOfTimerUnderConfig;
+    TextView idAndTypeOfTimerUnderConfig;
     ButtonSetTimer buttonSetTimer;
     Button buttonAddNewTimer;
     Button buttonTimerStart;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeObjects() {
-        timerUtil = new TimerUtil(textViewForTimerUnderConfig);
+        timerUtil = new TimerUtil(idAndTypeOfTimerUnderConfig, timeOfTimerUnderConfig);
         adapterForRecyclerView = new AdapterForTimerList(timerUtil.getTimerList());
         layoutManagerForRecyclerView = new LinearLayoutManager(this);
     }
@@ -67,27 +68,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeTextViews() {
-        textViewForTimerUnderConfig = (TextView) findViewById(R.id.textViewForTimerUnderConfig);
+        timeOfTimerUnderConfig = (TextView) findViewById(R.id.timeOfTimerUnderConfig);
+        idAndTypeOfTimerUnderConfig = (TextView) findViewById(R.id.idAndTypeOfTimerUnderConfig);
     }
 
     private void setObjects() {
         recyclerViewForTimer.setAdapter(adapterForRecyclerView);
         recyclerViewForTimer.setLayoutManager(layoutManagerForRecyclerView);
-        timerUtil.setTimerAdapter(adapterForRecyclerView);
+        timerUtil.setAdapter(adapterForRecyclerView);
     }
 
     public void addTimerToList(View buttonAddNewTimer) {
-        timerUtil.addTimerToList();
-        adapterForRecyclerView.notifyDataSetChanged();
+        if(!timerUtil.isTimerRunning()) {
+            timerUtil.addTimerToList();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void timerStart(View buttonTimerStart) {
-        timerUtil.runTimer();
+        if(!timerUtil.isTimerRunning()) timerUtil.launchSetOfTimers();
     }
 
     public void timerStop(View buttonTimerStop) {
-        timerUtil.stopTimer();
+        if(timerUtil.isTimerRunning()) timerUtil.stopTimerAndResetTimerList();
     }
 
     public void timerMinReduce(View buttonTimerSet) {

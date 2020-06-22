@@ -1,23 +1,21 @@
 package com.example.intervaltimer.timer;
 
-import android.widget.TextView;
-
 public class Timer {
 
     private long timerLength;
     private TextViewForTimer textViewForTimer; // when move Timer obj to the TimerList keeping hold
-    private int timerID;
+    private int timerId;
+    private TimerType timerType;
 
     Timer() {}
 
-//    public Timer(long timerLength, int timerID) {
-//        this.timerLength = timerLength;
-//        this.timerID = timerID;
-//    }
+    Timer(long timerLength, TimerType timerType, int timerID) {
+        this.timerLength = timerLength;
+        this.timerType = timerType;
+        this.timerId = timerID;
+    }
 
-    void setTimerLength(long changeForTimerLength) {
-
-        long newTimerLength = changeForTimerLength + timerLength;
+    void setTimerLength(long newTimerLength) {
 
         if(newTimerLength <= 0L) {
             timerLength = 0L;
@@ -38,12 +36,38 @@ public class Timer {
         return this.textViewForTimer;
     }
 
-    void setTimerID(int timerID) {
-        this.timerID = timerID;
+    void updateTimerParamInTextView(String timerId, String timerType, String newTimerLength) {
+        textViewForTimer.updateTimerParameters(timerId, timerType, newTimerLength);
     }
 
-    int getTimerID() {
-        return timerID;
+    void updateTimerId(int timerId) {
+        this.timerId = timerId;
+        textViewForTimer.updateTimerIdAndTypeInTextField(getTimerIdAsString(), timerType.toString());
+    }
+
+    void setTimerId(int timerId) {
+        this.timerId = timerId;
+    }
+
+    public int getTimerId() {
+        return timerId;
+    }
+
+    public String getTimerIdAsString() {
+        if(timerId == -1 || timerId == 0) {
+            return "";
+        } else {
+            return timerId + ". ";
+        }
+
+    }
+
+    public TimerType getTimerType() {
+        return timerType;
+    }
+
+    public void setTimerType(TimerType timerType) {
+        this.timerType = timerType;
     }
 
     @Override

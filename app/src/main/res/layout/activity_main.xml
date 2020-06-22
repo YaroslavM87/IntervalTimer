@@ -11,7 +11,7 @@
         android:id="@+id/minIncrease"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#00BCD4"
@@ -22,15 +22,15 @@
         android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toStartOf="@+id/secIncrease"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/timeOfTimerUnderConfig" />
 
     <Button
         android:id="@+id/secIncrease"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="#00BCD4"
         android:gravity="center"
         android:longClickable="true"
@@ -39,15 +39,15 @@
         android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/timeOfTimerUnderConfig" />
 
     <TextView
-        android:id="@+id/textViewForTimerUnderConfig"
+        android:id="@+id/timeOfTimerUnderConfig"
         android:layout_width="138dp"
         android:layout_height="40dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="#00BCD4"
         android:gravity="center"
         android:textColor="#000000"
@@ -55,13 +55,13 @@
         android:textStyle="bold"
         app:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/secIncrease" />
+        app:layout_constraintTop_toBottomOf="@+id/idAndTypeOfTimerUnderConfig" />
 
     <Button
         android:id="@+id/minReduce"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#00BCD4"
@@ -72,15 +72,15 @@
         android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toStartOf="@+id/secReduce"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForTimerUnderConfig" />
+        app:layout_constraintTop_toBottomOf="@+id/minIncrease" />
 
     <Button
         android:id="@+id/secReduce"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:background="#00BCD4"
         android:gravity="center"
         android:longClickable="true"
@@ -89,7 +89,7 @@
         android:textColor="#000000"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewForTimerUnderConfig" />
+        app:layout_constraintTop_toBottomOf="@+id/secIncrease" />
 
     <Button
         android:id="@+id/addTimer"
@@ -145,6 +145,20 @@
         android:background="#00BCD4"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/idAndTypeOfTimerUnderConfig"
+        android:layout_width="138dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

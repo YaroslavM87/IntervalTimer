@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 class TimerList {
 
+
     private ArrayList<Timer> timerList;
 
+
     TimerList() {
-        timerList = new ArrayList<Timer>();
+        timerList = new ArrayList<>();
     }
+
 
     ArrayList<Timer> getTimerList() {
         return timerList;
@@ -16,26 +19,6 @@ class TimerList {
 
     void setTimerList(ArrayList<Timer> list) {
         timerList = list;
-    }
-
-    void addTimerInList(int index, Timer timer) {
-        timerList.add(index, timer);
-    }
-
-    Timer getTimer(int index) {
-        return timerList.get(index);
-    }
-
-    int getIndexOfTimer(Timer timer) {
-        return timerList.indexOf(timer);
-    }
-
-    void removeTimerFromList(int index) {
-        timerList.remove(index);
-    }
-
-    void removeTimerFromList(Timer timer) {
-        timerList.remove(timer);
     }
 
     int getSizeOfTimerList() {
@@ -48,5 +31,33 @@ class TimerList {
 
     boolean timerListIsNotEmpty() {
         return !timerList.isEmpty();
+    }
+
+    void addTimerInList(int index, Timer timer) {
+        timerList.add(index, timer);
+    }
+
+    Timer getTimerFromList(int index) {
+        return timerList.get(index);
+    }
+
+    int getIndexOfTimerInList(Timer timer) {
+        return timerList.indexOf(timer);
+    }
+
+    void removeTimerFromList(int index) {
+        timerList.remove(index);
+        updateIdOfTimersInList();
+    }
+
+    void removeTimerFromList(Timer timer) {
+        timerList.remove(timer);
+        updateIdOfTimersInList();
+    }
+
+    private void updateIdOfTimersInList() {
+        for(Timer t : timerList) {
+            t.setTimerId(timerList.indexOf(t));
+        }
     }
 }

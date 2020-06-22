@@ -4,21 +4,38 @@ import android.widget.TextView;
 
 class TextViewForTimer {
 
-    private TextView textViewForTimer;
+    private TextView textViewForTimerIdAndType;
+    private TextView textViewForTimerValue;
 
-    TextViewForTimer(TextView textView) {
-        textViewForTimer = textView;
+    TextViewForTimer(TextView idAndType, TextView timeValue) {
+        textViewForTimerIdAndType = idAndType;
+        textViewForTimerValue = timeValue;
     }
 
-    void refreshTimerLengthInTextField(String newTimerLength) {
-        textViewForTimer.setText(newTimerLength);
+    void updateTimerLengthInTextField(String newTimerLength) {
+        textViewForTimerValue.setText(newTimerLength);
     }
 
-    void changeTextView(TextView textView) {
-       textViewForTimer = textView;
+    void updateTimerIdAndTypeInTextField(String timerId, String timerType) {
+        String timerIdAndType = timerId.concat(" ").concat(timerType);
+        textViewForTimerIdAndType.setText(timerIdAndType);
     }
 
-    TextView getTextViewForTimer() {
-        return textViewForTimer;
+    void updateTimerParameters(String timerId, String timerType, String newTimerLength) {
+        updateTimerIdAndTypeInTextField(timerId, timerType);
+        textViewForTimerValue.setText(newTimerLength);
+    }
+
+    void changeTextView(TextView idAndType, TextView timeValue) {
+        textViewForTimerIdAndType = idAndType;
+        textViewForTimerValue = timeValue;
+    }
+
+    TextView getTextViewForTimerIdAndType() {
+        return textViewForTimerIdAndType;
+    }
+
+    TextView getTextViewForTimerValue() {
+        return textViewForTimerValue;
     }
 }

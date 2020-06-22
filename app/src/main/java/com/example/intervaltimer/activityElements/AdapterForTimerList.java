@@ -1,6 +1,7 @@
 package com.example.intervaltimer.activityElements;
 
 import java.util.ArrayList;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,12 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
     class TimerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewForTimer;
+        TextView textViewForTimerIdAndType;
 
         TimerViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewForTimer = (TextView) itemView.findViewById(R.id.item);
+            textViewForTimerIdAndType = (TextView) itemView.findViewById(R.id.itemId);
             textViewForTimer.setOnClickListener(this);
         }
 
@@ -52,6 +55,8 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
     public void onBindViewHolder(@NonNull AdapterForTimerList.TimerViewHolder holder, int position) {
         Timer userTimer = timerList.get(position);
         holder.textViewForTimer.setText(userTimer.toString());
+        String timerIdAndType = userTimer.getTimerIdAsString().concat(userTimer.getTimerType().toString());
+        holder.textViewForTimerIdAndType.setText(timerIdAndType);
     }
 
     @Override
