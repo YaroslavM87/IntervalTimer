@@ -29,7 +29,7 @@ class TimerList {
         timerList.clear();
     }
 
-    boolean timerListIsNotEmpty() {
+    boolean isNotEmpty() {
         return !timerList.isEmpty();
     }
 
@@ -46,7 +46,7 @@ class TimerList {
     }
 
     void removeTimerFromList(int index) {
-        timerList.remove(index);
+        if(timerList.get(index) != null) timerList.remove(index);
         updateIdOfTimersInList();
     }
 

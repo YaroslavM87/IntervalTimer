@@ -77,15 +77,27 @@ public class TimerUtil {
         adapter.notifyDataSetChanged();
     }
 
-    public void deleteTimer(Timer timer) {
-        int indexOfTimerToDelete = timerList.getIndexOfTimerInList(timer);
-        timerList.removeTimerFromList(timer);
-        adapter.notifyItemRemoved(indexOfTimerToDelete);
-    }
+    public void deleteTimerUnderConfig() {
 
-    public void deleteTimer(int index) {
-        timerList.removeTimerFromList(index);
-        adapter.notifyItemRemoved(index);
+        if(timerList.getSizeOfTimerList() > 1) {
+
+            if(timerList.getTimerFromList(timerList.getIndexOfTimerInList(timerUnderConfig)) != null) {
+                int indexOfTimerToDelete = timerList.getIndexOfTimerInList(timerUnderConfig);
+
+                if(timerUnderConfig.getTimerType() == TimerType.WORK_TIME) {
+                    timerList.removeTimerFromList(indexOfTimerToDelete);
+                    timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+
+                    if(timerList.getSizeOfTimerList() >= indexOfTimerToDelete + 1) {
+                        timerList.removeTimerFromList(indexOfTimerToDelete);
+                    }
+                    adapter.notifyDataSetChanged();
+
+                } else {
+                    /* TODO: notify(); */
+                }
+            }
+        }
     }
 
     public void launchSetOfTimers() {
@@ -95,6 +107,8 @@ public class TimerUtil {
                 isFirstLaunch = false;
                 timerIsRunning = true;
                 runTimer();
+            } else {
+                /* TODO: notify(); */
             }
         }
     }
@@ -192,10 +206,16 @@ public class TimerUtil {
     }
 
     private void updateTimerValuesInTextViews(Timer timer) {
-            String id = timer.getTimerIdAsString();
+            String id = timer.getNumberOfGroupOfTimersAsString();
             String type = timer.getTimerType().toString();
             String timeValue = timer.timeValueToFormattedRepresentation(timer.getTimerLengthAtTheMoment());
             timer.updateTimerParamInTextView(id, type, timeValue);
+    }
+
+    private void deleteTimer(Timer timer) {
+        int indexOfTimerToDelete = timerList.getIndexOfTimerInList(timer);
+        timerList.removeTimerFromList(timer);
+        adapter.notifyItemRemoved(indexOfTimerToDelete);
     }
 
     private boolean isLastTimerInList(Timer timer) {

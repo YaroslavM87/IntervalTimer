@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonAddNewTimer;
     Button buttonTimerStart;
     Button buttonTimerStop;
+    Button buttonTimerDelete;
     RecyclerView recyclerViewForTimer;
     AdapterForTimerList adapterForRecyclerView;
     LinearLayoutManager layoutManagerForRecyclerView;
@@ -35,11 +36,20 @@ public class MainActivity extends AppCompatActivity {
         initializeObjects();
         setObjects();
 
+
+
         adapterForRecyclerView.setOnEntryClickListener(new AdapterForTimerList.OnEntryClickListener(){
             @Override
             public void onEntryClick(View view, int position) {
                 timerUtil.chooseTimerForConfiguration(position);
-                adapterForRecyclerView.notifyDataSetChanged();
+                //adapterForRecyclerView.notifyDataSetChanged();
+            }
+        });
+
+        buttonSetTimer.getButtonTimerMinIncrease().setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
             }
         });
     }
@@ -65,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         buttonAddNewTimer = findViewById(R.id.addTimer);
         buttonTimerStart = findViewById(R.id.startTimer);
         buttonTimerStop = findViewById(R.id.stopTimer);
+        buttonTimerDelete = findViewById(R.id.deleteTimer);
     }
 
     private void initializeTextViews() {
@@ -84,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    //@RequiresApi(api = Build.VERSION_CODES.M)
     public void timerStart(View buttonTimerStart) {
-        if(!timerUtil.isTimerRunning()) timerUtil.launchSetOfTimers();
+        timerUtil.launchSetOfTimers();
     }
 
     public void timerStop(View buttonTimerStop) {
-        if(timerUtil.isTimerRunning()) timerUtil.stopTimerAndResetTimerList();
+        timerUtil.stopTimerAndResetTimerList();
     }
 
     public void timerMinReduce(View buttonTimerSet) {
@@ -107,5 +118,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void timerSecIncrease(View buttonTimerStart) {
         timerUtil.configureTimer(1000L);
+    }
+
+    public void timerDelete(View buttonTimerDelete) {
+        timerUtil.deleteTimerUnderConfig();
     }
 }

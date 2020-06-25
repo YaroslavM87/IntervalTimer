@@ -42,7 +42,7 @@ public class Timer {
 
     void updateTimerId(int timerId) {
         this.timerId = timerId;
-        textViewForTimer.updateTimerIdAndTypeInTextField(getTimerIdAsString(), timerType.toString());
+        textViewForTimer.updateTimerIdAndTypeInTextField(getNumberOfGroupOfTimersAsString(), timerType.toString());
     }
 
     void setTimerId(int timerId) {
@@ -59,7 +59,14 @@ public class Timer {
         } else {
             return timerId + ". ";
         }
+    }
 
+    public String getNumberOfGroupOfTimersAsString() {
+        if(timerId == -1 || timerId == 0 || timerId % 2 == 0) {
+            return "";
+        } else {
+            return ((timerId + 1) / 2) + ". ";
+        }
     }
 
     public TimerType getTimerType() {

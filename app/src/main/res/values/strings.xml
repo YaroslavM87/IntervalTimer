@@ -5,4 +5,5 @@
     <string name="addTimer">Add to list</string>
     <string name="stopTimer">Stop and reset</string>
     <string name="startTimer">start</string>
+    <string name="deleteTimer">Delete</string>
 </resources>

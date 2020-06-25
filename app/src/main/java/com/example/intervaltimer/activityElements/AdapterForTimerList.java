@@ -55,7 +55,7 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
     public void onBindViewHolder(@NonNull AdapterForTimerList.TimerViewHolder holder, int position) {
         Timer userTimer = timerList.get(position);
         holder.textViewForTimer.setText(userTimer.toString());
-        String timerIdAndType = userTimer.getTimerIdAsString().concat(userTimer.getTimerType().toString());
+        String timerIdAndType = userTimer.getNumberOfGroupOfTimersAsString().concat(userTimer.getTimerType().toString());
         holder.textViewForTimerIdAndType.setText(timerIdAndType);
     }
 
