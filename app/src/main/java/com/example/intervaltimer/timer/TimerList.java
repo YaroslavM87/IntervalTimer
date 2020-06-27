@@ -1,24 +1,18 @@
 package com.example.intervaltimer.timer;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.List;
 
 class TimerList {
 
-
     private ArrayList<Timer> timerList;
 
-
-    TimerList() {
-        timerList = new ArrayList<>();
+    TimerList(ArrayList<Timer> timerList) {
+        this.timerList = timerList;
     }
-
 
     ArrayList<Timer> getTimerList() {
         return timerList;
-    }
-
-    void setTimerList(ArrayList<Timer> list) {
-        timerList = list;
     }
 
     int getSizeOfTimerList() {
@@ -52,7 +46,7 @@ class TimerList {
 
     void removeTimerFromList(Timer timer) {
         timerList.remove(timer);
-        updateIdOfTimersInList();
+        //updateIdOfTimersInList();
     }
 
     private void updateIdOfTimersInList() {

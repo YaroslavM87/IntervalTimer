@@ -3,7 +3,7 @@ package com.example.intervaltimer.timer;
 public class Timer {
 
     private long timerLength;
-    private TextViewForTimer textViewForTimer; // when move Timer obj to the TimerList keeping hold
+    private TextViewForTimer textViewForTimer;
     private int timerId;
     private TimerType timerType;
 
@@ -15,7 +15,7 @@ public class Timer {
         this.timerId = timerID;
     }
 
-    void setTimerLength(long newTimerLength) {
+    void setLength(long newTimerLength) {
 
         if(newTimerLength <= 0L) {
             timerLength = 0L;
@@ -24,7 +24,7 @@ public class Timer {
         }
     }
 
-    long getTimerLengthAtTheMoment() {
+    long getLengthAtTheMoment() {
         return this.timerLength;
     }
 
@@ -40,7 +40,7 @@ public class Timer {
         textViewForTimer.updateTimerParameters(timerId, timerType, newTimerLength);
     }
 
-    void updateTimerId(int timerId) {
+    void updateId(int timerId) {
         this.timerId = timerId;
         textViewForTimer.updateTimerIdAndTypeInTextField(getNumberOfGroupOfTimersAsString(), timerType.toString());
     }
@@ -49,7 +49,7 @@ public class Timer {
         this.timerId = timerId;
     }
 
-    public int getTimerId() {
+    public int getId() {
         return timerId;
     }
 
@@ -68,12 +68,14 @@ public class Timer {
             return ((timerId + 1) / 2) + ". ";
         }
     }
+    // ((timerId + 1) / 2) + ". "
+    // timerId + ". "
 
-    public TimerType getTimerType() {
+    public TimerType getType() {
         return timerType;
     }
 
-    public void setTimerType(TimerType timerType) {
+    public void setType(TimerType timerType) {
         this.timerType = timerType;
     }
 

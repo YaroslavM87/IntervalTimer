@@ -24,8 +24,8 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
 
         TimerViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewForTimer = (TextView) itemView.findViewById(R.id.item);
-            textViewForTimerIdAndType = (TextView) itemView.findViewById(R.id.itemId);
+            textViewForTimer = (TextView) itemView.findViewById(R.id.timerValue);
+            textViewForTimerIdAndType = (TextView) itemView.findViewById(R.id.timerIdAndType);
             textViewForTimer.setOnClickListener(this);
         }
 
@@ -39,15 +39,17 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
 
     private ArrayList<Timer> timerList;
     private OnEntryClickListener onEntryClickListener;
+    private int layout;
 
-    public AdapterForTimerList(ArrayList<Timer> timerList) {
+    public AdapterForTimerList(ArrayList<Timer> timerList, int layout) {
         this.timerList = timerList;
+        this.layout = layout;
     }
 
     @NonNull
     @Override
     public AdapterForTimerList.TimerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_recycler_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return new TimerViewHolder(view);
     }
 
@@ -55,7 +57,7 @@ public class AdapterForTimerList extends RecyclerView.Adapter<AdapterForTimerLis
     public void onBindViewHolder(@NonNull AdapterForTimerList.TimerViewHolder holder, int position) {
         Timer userTimer = timerList.get(position);
         holder.textViewForTimer.setText(userTimer.toString());
-        String timerIdAndType = userTimer.getNumberOfGroupOfTimersAsString().concat(userTimer.getTimerType().toString());
+        String timerIdAndType = userTimer.getNumberOfGroupOfTimersAsString().concat(userTimer.getType().toString());
         holder.textViewForTimerIdAndType.setText(timerIdAndType);
     }
 

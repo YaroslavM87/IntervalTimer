@@ -1,23 +1,24 @@
 package com.example.intervaltimer;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Build;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.intervaltimer.activityElements.ButtonSetTimer;
 import com.example.intervaltimer.activityElements.AdapterForTimerList;
-import com.example.intervaltimer.timer.TimerUtil;
+import com.example.intervaltimer.timer.SharedResources;
+import com.example.intervaltimer.timer.TimerCreateUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class CreateTimerActivity extends AppCompatActivity {
 
-    TimerUtil timerUtil;
-    TextView timeOfTimerUnderConfig;
+    TimerCreateUtil timerCreateUtil;
     TextView idAndTypeOfTimerUnderConfig;
+    TextView timeOfTimerUnderConfig;
     ButtonSetTimer buttonSetTimer;
     Button buttonAddNewTimer;
     Button buttonTimerStart;
@@ -26,25 +27,18 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerViewForTimer;
     AdapterForTimerList adapterForRecyclerView;
     LinearLayoutManager layoutManagerForRecyclerView;
+    int layoutForRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_timer);
 
         initializeActivityElements();
         initializeObjects();
         setObjects();
 
-
-
-        adapterForRecyclerView.setOnEntryClickListener(new AdapterForTimerList.OnEntryClickListener(){
-            @Override
-            public void onEntryClick(View view, int position) {
-                timerUtil.chooseTimerForConfiguration(position);
-                //adapterForRecyclerView.notifyDataSetChanged();
-            }
-        });
+        performActionWhenClickRecyclerViewItem();
 
         buttonSetTimer.getButtonTimerMinIncrease().setOnLongClickListener(new View.OnLongClickListener(){
             @Override
@@ -52,17 +46,19 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
     }
 
     private void initializeActivityElements() {
         initializeButtons();
         initializeTextViews();
-        recyclerViewForTimer = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerViewForTimer = (RecyclerView) findViewById(R.id.createTimerRecyclerView);
+        layoutForRecyclerView = R.layout.create_timer_recycler_view;
     }
 
     private void initializeObjects() {
-        timerUtil = new TimerUtil(idAndTypeOfTimerUnderConfig, timeOfTimerUnderConfig);
-        adapterForRecyclerView = new AdapterForTimerList(timerUtil.getTimerList());
+        timerCreateUtil = new TimerCreateUtil(idAndTypeOfTimerUnderConfig, timeOfTimerUnderConfig);
+        adapterForRecyclerView = new AdapterForTimerList(timerCreateUtil.getTimerList(), layoutForRecyclerView);
         layoutManagerForRecyclerView = new LinearLayoutManager(this);
     }
 
@@ -86,41 +82,53 @@ public class MainActivity extends AppCompatActivity {
     private void setObjects() {
         recyclerViewForTimer.setAdapter(adapterForRecyclerView);
         recyclerViewForTimer.setLayoutManager(layoutManagerForRecyclerView);
-        timerUtil.setAdapter(adapterForRecyclerView);
+        timerCreateUtil.setAdapter(adapterForRecyclerView);
     }
 
     public void addTimerToList(View buttonAddNewTimer) {
-        if(!timerUtil.isTimerRunning()) {
-            timerUtil.addTimerToList();
+        timerCreateUtil.addTimerInList();
+
+//        if(!timerCreateUtil.canTimerBeRun()) {
+//            timerCreateUtil.addTimerInList();
+//        }
+    }
+
+    public void timerStart(View buttonTimerStart) {
+        if(timerCreateUtil.canTimerBeRun()) {
+            timerCreateUtil.updateTimerListInSharedResources();
+            Intent intent = new Intent(this, RunTimerActivity.class);
+            startActivity(intent);
         }
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.M)
-    public void timerStart(View buttonTimerStart) {
-        timerUtil.launchSetOfTimers();
-    }
-
-    public void timerStop(View buttonTimerStop) {
-        timerUtil.stopTimerAndResetTimerList();
-    }
-
     public void timerMinReduce(View buttonTimerSet) {
-        timerUtil.configureTimer(-60000L);
+        timerCreateUtil.configureTimer(-60000L);
     }
 
     public void timerMinIncrease(View buttonTimerStart) {
-        timerUtil.configureTimer(60000L);
+        timerCreateUtil.configureTimer(60000L);
     }
 
     public void timerSecReduce(View buttonTimerSet) {
-        timerUtil.configureTimer(-1000L);
+        timerCreateUtil.configureTimer(-1000L);
     }
 
     public void timerSecIncrease(View buttonTimerStart) {
-        timerUtil.configureTimer(1000L);
+        timerCreateUtil.configureTimer(1000L);
+    }
+
+    public void performActionWhenClickRecyclerViewItem() {
+        if(this.getClass().getSimpleName().equals("CreateTimerActivity")) {
+            adapterForRecyclerView.setOnEntryClickListener(new AdapterForTimerList.OnEntryClickListener(){
+                @Override
+                public void onEntryClick(View view, int position) {
+                    timerCreateUtil.chooseTimerForConfiguration(position);
+                }
+            });
+        }
     }
 
     public void timerDelete(View buttonTimerDelete) {
-        timerUtil.deleteTimerUnderConfig();
+        timerCreateUtil.deleteTimerUnderConfig();
     }
 }
