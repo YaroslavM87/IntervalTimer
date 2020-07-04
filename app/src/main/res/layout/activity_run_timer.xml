@@ -2,60 +2,112 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00BCD4"
+    android:orientation="vertical"
+    android:color="@color/colorBackgroundSecondary"
     tools:context="com.example.intervaltimer.RunTimerActivity">
 
     <TextView
-        android:id="@+id/idAndTypeOfOperatedTimer"
+        android:id="@+id/idOfOperatedTimer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/timeOfOperatedTimer"
-        tools:layout_editor_absoluteX="1dp" />
+        android:layout_weight="12"
+        android:background="@color/colorBackgroundSecondary"
+        android:gravity="center|start"
+        android:paddingStart="40dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="1st lap"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="25sp"
+        app:fontFamily="@font/quantico_italic" />
+
+    <TextView
+        android:id="@+id/typeOfOperatedTimer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:background="@color/colorBackgroundSecondary"
+        android:gravity="bottom|center_horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="START from"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="25sp"
+        app:fontFamily="@font/quantico_bold" />
 
     <TextView
         android:id="@+id/timeOfOperatedTimer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="35"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="90sp"
-        android:textStyle="bold"
-        app:fontFamily="sans-serif"
-        app:layout_constraintBottom_toTopOf="@+id/runTimerRecyclerView" />
+        android:layout_weight="28"
+        android:background="@color/colorBackgroundSecondary"
+        android:gravity="center_horizontal"
+        android:paddingStart="20dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="01 : 20"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="85sp"
+        app:fontFamily="@font/quantico_bold" />
+
+    <TextView
+        android:id="@+id/headerOfRclViewInRun"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:background="@color/colorBackgroundSecondary"
+        android:gravity="center|start"
+        android:paddingStart="40dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="next"
+        android:textColor="@color/colorTextThird"
+        android:textSize="25sp"
+        app:fontFamily="@font/quantico_italic" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/runTimerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="20"
         android:layout_gravity="center"
-        android:layout_weight="30"
-        android:background="#00BCD4"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/stopTimer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:background="@color/colorBackgroundSecondary"
+        app:layoutManager="LinearLayoutManager" />
 
-    <Button
-        android:id="@+id/stopTimer"
+    <LinearLayout
+        android:id="@+id/forButtonStopTimer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="10"
-        android:background="#00BCD4"
-        android:onClick="timerStop"
-        android:text="@string/stopTimer"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@color/colorBackgroundSecondary" >
+
+        <Button
+            android:id="@+id/stopTimer"
+            android:onClick="timerStop"
+            style="@style/ButtonStopStyle"
+            android:layout_gravity="center"
+            android:text="@string/stopTimer"
+            android:textColor="@color/colorTextPrimary"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeColor="@color/colorTextPrimary"
+            app:strokeWidth="1dp"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
+
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintBottom_toTopOf="@+id/stopTimer"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintHorizontal_bias="0.0"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->

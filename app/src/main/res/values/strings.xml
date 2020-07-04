@@ -1,9 +1,13 @@
 <resources>
-    <string name="app_name">IntervalTimer</string>
-    <string name="plus">+</string>
-    <string name="minus">-</string>
-    <string name="addTimer">Add to list</string>
-    <string name="stopTimer">Stop and reset</string>
-    <string name="startTimer">start</string>
+    <string name="app_name">Interval timer</string>
+    <string name="plus">A</string>
+    <string name="minus">R</string>
+    <string name="addTimer">Add</string>
+    <string name="applyChange">Apply</string>
     <string name="deleteTimer">Delete</string>
+    <string name="resetList">Reset</string>
+    <string name="restoreList">Restore</string>
+    <string name="startTimer">Start</string>
+    <string name="stopTimer">Stop</string>
+    <string name="forViewInRVAdapterInActivityCreate">with rest for </string>
 </resources>

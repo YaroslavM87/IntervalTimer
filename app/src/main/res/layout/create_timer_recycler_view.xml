@@ -2,29 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:id="@+id/timerTypeInCreate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#00BCD4"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:id="@+id/timerIdAndType"/>
+            android:gravity="center" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:background="#00BCD4"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:id="@+id/timerValue"/>
-
+            android:id="@+id/timerValueInCreate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" />
 
 </LinearLayout>

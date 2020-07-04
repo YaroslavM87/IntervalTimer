@@ -4,28 +4,30 @@ import java.util.ArrayList;
 
 import android.widget.TextView;
 
-import com.example.intervaltimer.activityElements.AdapterForTimerList;
+import com.example.intervaltimer.activityElements.AdptForTimListInCrtActvt;
 
 public class TimerCreateUtil {
 
     private TimerList timerList;
 
     private Timer timerUnderConfig;
-    private TextView textViewForTimerUnderConfigIdAndType;
+    private TextView textViewForTimerUnderConfigType;
+    private TextView textViewForTimerUnderConfigId;
     private TextView textViewForTimerUnderConfigTimeValue;
 
     private long initialTime;
 
-    private AdapterForTimerList adapter;
+    private AdptForTimListInCrtActvt adapter;
 
     {
         initialTime = 0L;
     }
 
-    public TimerCreateUtil(TextView idAndType, TextView timeValue) {
-        textViewForTimerUnderConfigIdAndType = idAndType;
+    public TimerCreateUtil(TextView type, TextView id, TextView timeValue) {
+        textViewForTimerUnderConfigType = type;
+        textViewForTimerUnderConfigId = id;
         textViewForTimerUnderConfigTimeValue = timeValue;
-        timerList = new TimerList(SharedResources.getCopyOfTimerList(idAndType, timeValue));
+        timerList = new TimerList(SharedResources.getCopyOfTimerList(type, id, timeValue));
         setInitialConditions();
     }
 
@@ -35,95 +37,113 @@ public class TimerCreateUtil {
             if (timerUnderConfig.getLengthAtTheMoment() > 0L) {
                 timerList.addTimerInList(timerList.getSizeOfTimerList(), timerUnderConfig);
                 timerUnderConfig.updateId(timerList.getSizeOfTimerList() - 1);
-                timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+                timerUnderConfig = createTimer(textViewForTimerUnderConfigType, textViewForTimerUnderConfigId, textViewForTimerUnderConfigTimeValue);
                 adapter.notifyDataSetChanged();
             }
 
         } else {
             if (timerUnderConfig.getLengthAtTheMoment() > 0L) {
-                timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+                timerUnderConfig = createTimer(textViewForTimerUnderConfigType, textViewForTimerUnderConfigId, textViewForTimerUnderConfigTimeValue);
             }
         }
+        timerUnderConfig.updateIdInTextView(timerList.getSizeOfTimerList());
     }
 
     public void chooseTimerForConfiguration(int index) {
         if (index != timerList.getIndexOfTimerInList(timerUnderConfig)) {
             timerUnderConfig = timerList.getTimerFromList(index);
-            updateTimerValuesInTextViews(timerUnderConfig);
+            updateAllTimersParamsInTextView(timerUnderConfig);
         }
     }
 
     public void configureTimer(long changeForTimerLength) {
         long newTimerLength = changeForTimerLength + timerUnderConfig.getLengthAtTheMoment();
         if (newTimerLength >= 1000L) {
-            timerUnderConfig.setLength(newTimerLength);
+            timerUnderConfig.updateTimerLengthInCrtActvt(newTimerLength);
         } else {
             if (timerUnderConfig.getLengthAtTheMoment() > 0L)
-                timerUnderConfig.setLength(1000L);
+                timerUnderConfig.updateTimerLengthInCrtActvt(1000L);
         }
-        updateTimerValues(timerUnderConfig, timerUnderConfig.getLengthAtTheMoment());
+        timerUnderConfig.updateTimerValueInTextView(timerUnderConfig.toString(1));
         adapter.notifyDataSetChanged();
     }
 
-    public void deleteTimerUnderConfig() {
+    public void deletePairOfTimers() {
 
         if (timerList.getSizeOfTimerList() > 1) {
 
-            if (timerList.getTimerFromList(timerList.getIndexOfTimerInList(timerUnderConfig)) != null) {
+            if (timerList.getTimerList().contains(timerUnderConfig)) {
                 int indexOfTimerToDelete = timerList.getIndexOfTimerInList(timerUnderConfig);
 
                 if (timerUnderConfig.getType() == TimerType.WORK_TIME) {
                     timerList.removeTimerFromList(indexOfTimerToDelete);
-                    timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
 
                     if (timerList.getSizeOfTimerList() >= indexOfTimerToDelete + 1) {
                         timerList.removeTimerFromList(indexOfTimerToDelete);
                     }
 
-                    adapter.notifyDataSetChanged();
-
-                } else {
-                    /* TODO: notify(); */
+                } else if(timerUnderConfig.getType() == TimerType.REST_TIME) {
+                    timerList.removeTimerFromList(indexOfTimerToDelete - 1);
+                    timerList.removeTimerFromList(indexOfTimerToDelete - 1);
                 }
+
+                timerUnderConfig = createTimer(textViewForTimerUnderConfigType, textViewForTimerUnderConfigId, textViewForTimerUnderConfigTimeValue);
+                timerUnderConfig.updateIdInTextView(timerList.getSizeOfTimerList());
+                adapter.notifyDataSetChanged();
             }
         }
     }
 
     public void resetTimerList() {
-        updateTimerValues(timerUnderConfig, 0L);
-        timerList.clearTimerList();
+        timerList = new TimerList(SharedResources.getNewTimerList());
+        setInitialConditions();
+        adapter.setTimerList(timerList.getTimerList());
+        adapter.notifyDataSetChanged();
     }
 
-    public void updateTimerListInSharedResources() {
-        SharedResources.setTimerList(timerList.getTimerList());
+    public void restoreTimerList() {
+        timerList = new TimerList(SharedResources.getCopyOfTimerList(
+                textViewForTimerUnderConfigType,
+                textViewForTimerUnderConfigId,
+                textViewForTimerUnderConfigTimeValue
+        ));
+        adapter.setTimerList(timerList.getTimerList());
+        adapter.notifyDataSetChanged();
     }
 
     public ArrayList<Timer> getTimerList() {
         return timerList.getTimerList();
     }
 
-    public void setAdapter(AdapterForTimerList adapter) {
+    public void setAdapter(AdptForTimListInCrtActvt adapter) {
         this.adapter = adapter;
     }
 
-    public boolean canTimerBeRun() {
-        return timerList.getTimerFromList(timerList.getSizeOfTimerList() - 1).getType() == TimerType.WORK_TIME;
+    public boolean isReadyToStartTimerSet() {
+        return updateTimerListInSharedResources() &
+               timerList.getTimerFromList(timerList.getSizeOfTimerList() - 1).getType() == TimerType.WORK_TIME &
+               !SharedResources.getTimerList().isEmpty();
+    }
+
+    private boolean updateTimerListInSharedResources() {
+        return SharedResources.setTimerList(timerList.getTimerList());
     }
 
     private void setInitialConditions() {
         if(timerList.getTimerList().isEmpty()) {
-            addInitialTimerInList(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+            addInitialTimerInList(textViewForTimerUnderConfigType, textViewForTimerUnderConfigId, textViewForTimerUnderConfigTimeValue);
         }
-        timerUnderConfig = createTimer(textViewForTimerUnderConfigIdAndType, textViewForTimerUnderConfigTimeValue);
+        timerUnderConfig = createTimer(textViewForTimerUnderConfigType, textViewForTimerUnderConfigId, textViewForTimerUnderConfigTimeValue);
+        timerUnderConfig.updateIdInTextView(timerList.getSizeOfTimerList());
     }
 
-    private void addInitialTimerInList(TextView idAndType, TextView timeValue) {
+    private void addInitialTimerInList(TextView type, TextView id, TextView timeValue) {
         Timer newTimer = new Timer(5000L, TimerType.TIME_TO_START, 0);
-        newTimer.setTextViewForTimer(new TextViewForTimer(idAndType, timeValue));
+        newTimer.setTextViewForTimer(new TextViewForTimer(type, id, timeValue));
         timerList.addTimerInList(0, newTimer);
     }
 
-    private Timer createTimer(TextView idAndType, TextView timeValue) {
+    private Timer createTimer(TextView type, TextView id, TextView timeValue) {
         Timer newTimer;
 
         if (
@@ -136,23 +156,16 @@ public class TimerCreateUtil {
             newTimer = new Timer(initialTime, TimerType.REST_TIME, -1);
         }
 
-        newTimer.setTextViewForTimer(new TextViewForTimer(idAndType, timeValue));
-        updateTimerValues(newTimer, initialTime);
-
+        newTimer.setTextViewForTimer(new TextViewForTimer(type, id, timeValue));
+        updateAllTimersParamsInTextView(newTimer);
         return newTimer;
     }
 
-    private void updateTimerValues(Timer timer, long currentTimeValue) {
-        if (timer != null) {
-            timer.setLength(currentTimeValue);
-            updateTimerValuesInTextViews(timer);
-        }
-    }
-
-    private void updateTimerValuesInTextViews(Timer timer) {
-        String id = timer.getNumberOfGroupOfTimersAsString();
-        String type = timer.getType().toString();
-        String timeValue = timer.timeValueToFormattedRepresentation(timer.getLengthAtTheMoment());
-        timer.updateTimerParamInTextView(id, type, timeValue);
+    private void updateAllTimersParamsInTextView(Timer timer) {
+        timer.updateAllTimersParamsInTextView(
+                timer.getType().toString(true),
+                timer.getNumberOfGroupOfTimers(timer.getId()),
+                timer.timeValueToFormattedRepresentationType_1(timer.getLengthAtTheMoment())
+        );
     }
 }

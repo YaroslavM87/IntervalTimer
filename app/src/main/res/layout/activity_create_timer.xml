@@ -1,164 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00BCD4"
-    tools:context=".CreateTimerActivity">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/createTimerRecyclerView"
-        android:layout_width="156dp"
-        android:layout_height="680dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:background="#00BCD4"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/timerCreateActivityLeftSide"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="20"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/idAndTypeOfTimerUnderConfig"
-        android:layout_width="138dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/createTimerRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/timeOfTimerUnderConfig"
-        android:layout_width="138dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:fontFamily="sans-serif"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idAndTypeOfTimerUnderConfig" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/minIncrease"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:longClickable="true"
-        android:onClick="timerMinIncrease"
-        android:text="@string/plus"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toStartOf="@+id/secIncrease"
-        app:layout_constraintTop_toBottomOf="@+id/timeOfTimerUnderConfig" />
+    <LinearLayout
+        android:id="@+id/timerCreateActivityRightSide"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="14"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/rounded_corner_left" >
 
-    <Button
-        android:id="@+id/secIncrease"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:longClickable="true"
-        android:onClick="timerSecIncrease"
-        android:text="@string/plus"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeOfTimerUnderConfig" />
+        <TextView
+            android:id="@+id/typeOfTimerUnderConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/colorBackgroundSecondary"
+            android:gravity="start|center_horizontal"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:text="Start"
+            android:textColor="@color/colorTextPrimary"
+            android:fontFamily="@font/quantico_italic" />
 
-    <Button
-        android:id="@+id/minReduce"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:longClickable="true"
-        android:onClick="timerMinReduce"
-        android:text="@string/minus"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toStartOf="@+id/secReduce"
-        app:layout_constraintTop_toBottomOf="@+id/minIncrease" />
+        <TextView
+            android:id="@+id/timeOfTimerUnderConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="0dp"
+            android:background="@color/colorBackgroundSecondary"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="00 : 00"
+            android:textSize="24sp"
 
-    <Button
-        android:id="@+id/secReduce"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="#00BCD4"
-        android:gravity="center"
-        android:longClickable="true"
-        android:onClick="timerSecReduce"
-        android:text="@string/minus"
-        android:textColor="#000000"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/secIncrease" />
+            android:fontFamily="@font/quantico_bold" />
 
-    <Button
-        android:id="@+id/addTimer"
-        android:layout_width="138dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="#00BCD4"
-        android:lines="2"
-        android:onClick="addTimerToList"
-        android:text="@string/addTimer"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/secReduce" />
+        <TextView
+            android:id="@+id/idOfTimerUnderConfig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="30dp"
+            android:background="@color/colorBackgroundSecondary"
+            android:gravity="end|center_horizontal"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:text="2nd lap"
+            android:textColor="@color/colorTextPrimary"
+            android:fontFamily="@font/quantico_italic" />
 
-    <Button
-        android:id="@+id/startTimer"
-        android:layout_width="138dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="#00BCD4"
-        android:onClick="timerStart"
-        android:text="@string/startTimer"
-        android:textColor="#000000"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTimer" />
+        <LinearLayout
+            android:id="@+id/buttonTimerIncreaseSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/colorBackgroundSecondary" >
 
-    <Button
-        android:id="@+id/deleteTimer"
-        android:layout_width="138dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="#00BCD4"
-        android:onClick="timerDelete"
-        android:text="@string/deleteTimer"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startTimer" />
+            <Button
+                android:id="@+id/minIncrease"
+                android:onClick="timerMinIncrease"
+                style="@style/ButtonConfigureStyle"
+                app:backgroundTint="@color/colorBackgroundSecondary"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_increase"
+                app:iconTint="#FFFFFF"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeColor="@color/colorButtonStroke"
+                app:strokeWidth="1dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/secIncrease"
+                android:onClick="timerSecIncrease"
+                style="@style/ButtonConfigureStyle"
+                app:backgroundTint="@color/colorBackgroundSecondary"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_increase"
+                app:iconTint="#FFFFFF"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeColor="@color/colorButtonStroke"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonTimerReduceSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/colorBackgroundSecondary" >
+
+            <Button
+                android:id="@+id/minReduce"
+                android:onClick="timerMinReduce"
+                style="@style/ButtonConfigureStyle"
+                app:backgroundTint="@color/colorBackgroundSecondary"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_reduce"
+                app:iconTint="#FFFFFF"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeColor="@color/colorButtonStroke"
+                app:strokeWidth="1dp" />
+
+            <Button
+                android:id="@+id/secReduce"
+                android:onClick="timerSecReduce"
+                style="@style/ButtonConfigureStyle"
+                app:backgroundTint="@color/colorBackgroundSecondary"
+                app:elevation="0dp"
+                app:icon="@drawable/ic_reduce"
+                app:iconTint="#FFFFFF"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeColor="@color/colorButtonStroke"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addTimerApplyChange"
+            style="@style/ButtonActionStyle"
+            android:background="@android:color/transparent"
+            android:onClick="addTimerToList"
+            android:text="@string/addTimer"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeColor="@color/colorButtonStroke"
+            app:strokeWidth="1dp"/>
+
+        <Button
+            android:id="@+id/deleteTimer"
+            android:onClick="timerDelete"
+            android:text="@string/deleteTimer"
+            style="@style/ButtonActionStyle"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeColor="@color/colorButtonStroke"
+            app:strokeWidth="1dp"/>
+
+        <Button
+            android:id="@+id/resetList"
+            android:onClick="resetList"
+            android:text="@string/resetList"
+            style="@style/ButtonActionStyle"
+            app:rippleColor="@color/colorButtonRipple"
+            app:strokeColor="@color/colorButtonStroke"
+            app:strokeWidth="1dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutStartTimer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:background="@color/colorBackgroundSecondary" >
+
+            <Button
+                android:id="@+id/startTimer"
+                style="@style/ButtonStartStyle"
+                android:onClick="timerStart"
+                android:text="@string/startTimer"
+                android:textColor="@color/colorTextPrimary"
+                app:rippleColor="@color/colorButtonRipple"
+                app:strokeColor="@color/colorTextPrimary"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+<!--    android:paddingStart="20dp"-->
+<!--    android:paddingLeft="20dp"-->
+<!--    android:paddingTop="20dp"-->
+<!--    android:paddingEnd="20dp"-->
+<!--    android:paddingRight="20dp"-->
+<!--    android:paddingBottom="20dp"-->
+<!--    android:layout_weight="1"-->
+
+<!--    android:background="?android:attr/selectableItemBackground"-->
+
+<!--    app:backgroundTint="@color/mtrl_btn_text_btn_bg_color_selector"-->
+
+<!--<ConstraintLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:gravity="center">-->
+
+
+
+<!--</ConstraintLayout>           -->
+
+

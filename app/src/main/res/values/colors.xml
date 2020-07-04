@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+
+    <!--   color for the app bar and other primary UI elements -->
+    <color name="colorPrimary">#e0e0e0</color>
+
+    <!--   a darker variant of the primary color, used for
+           the status bar (on Android 5.0+) and contextual app bars -->
+    <color name="colorPrimaryDark">#1C1C42</color>
+
+    <!--   a secondary color for controls like checkboxes and text fields -->
+    <color name="colorAccent">#58598F</color>
+
+    <color name="colorTextPrimary">#E0E0E0</color>
+    <color name="colorTextSecond">#BF3219</color>
+    <color name="colorTextThird">#7171B5</color>
+    <color name="colorBackgroundPrimary">#CACACA</color>
+    <color name="colorBackgroundSecondary">#47488A</color>
+    <color name="colorButtonStroke">#58598F</color>
+    <color name="colorButtonRipple">#7171B5</color>
+
 </resources>
+
+<!--<color name="colorPrimaryLight">#ffffff</color>-->
+<!--<color name="colorStatusBar">#</color>-->
+<!--<color name="colorOnSecondary">#</color>-->
+<!--<color name="colorError">#</color>-->
+<!--<color name="colorOnError">#</color>-->
+<!--<color name="colorSurface">#</color>-->
+<!--<color name="colorOnSurface">#</color>-->
+<!--<color name="colorBackground">#</color>-->
+<!--<color name="colorOnBackground">#</color>-->
+<!--<color name="colorNavigationBar">#</color>-->
+<!--<color name="colorBackground">#3A3A3A</color>-->
+<!--<color name="colorNavigationBar">#03DAC5</color>-->
+
+<!--    #BF3219-->

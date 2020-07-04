@@ -3,28 +3,30 @@ package com.example.intervaltimer;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.intervaltimer.activityElements.AdapterForTimerList;
-import com.example.intervaltimer.timer.Timer;
-import com.example.intervaltimer.timer.TimerCreateUtil;
+import com.example.intervaltimer.activityElements.AdptForTimListInCrtActvt;
+import com.example.intervaltimer.activityElements.AdptForTimListInRunActvt;
 import com.example.intervaltimer.timer.TimerRunUtil;
 
-import java.util.ArrayList;
+import java.util.Objects;
 
 public class RunTimerActivity extends AppCompatActivity {
 
     TimerRunUtil timerRunUtil;
-    TextView idAndTypeOfOperatedTimer;
+
+    TextView typeOfOperatedTimer;
+    TextView idOfOperatedTimer;
     TextView timeOfOperatedTimer;
     Button buttonTimerStop;
+
     RecyclerView recyclerViewForTimer;
-    AdapterForTimerList adapterForRecyclerView;
+    AdptForTimListInRunActvt adapterForRecyclerView;
     LinearLayoutManager layoutManagerForRecyclerView;
     int layoutForRecyclerView;
 
@@ -32,6 +34,7 @@ public class RunTimerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run_timer);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         initializeActivityElements();
         initializeObjects();
@@ -47,8 +50,8 @@ public class RunTimerActivity extends AppCompatActivity {
     }
 
     private void initializeObjects() {
-        timerRunUtil = new TimerRunUtil(idAndTypeOfOperatedTimer, timeOfOperatedTimer);
-        adapterForRecyclerView = new AdapterForTimerList(timerRunUtil.getTimerList(), layoutForRecyclerView);
+        timerRunUtil = new TimerRunUtil(typeOfOperatedTimer, idOfOperatedTimer, timeOfOperatedTimer);
+        adapterForRecyclerView = new AdptForTimListInRunActvt(timerRunUtil.getTimerList(), layoutForRecyclerView);
         layoutManagerForRecyclerView = new LinearLayoutManager(this);
     }
 
@@ -64,8 +67,10 @@ public class RunTimerActivity extends AppCompatActivity {
     }
 
     private void initializeTextViews() {
+
+        typeOfOperatedTimer = (TextView) findViewById(R.id.typeOfOperatedTimer);
+        idOfOperatedTimer = (TextView) findViewById(R.id.idOfOperatedTimer);
         timeOfOperatedTimer = (TextView) findViewById(R.id.timeOfOperatedTimer);
-        idAndTypeOfOperatedTimer = (TextView) findViewById(R.id.idAndTypeOfOperatedTimer);
     }
 
     public void performActivityMainTask() {

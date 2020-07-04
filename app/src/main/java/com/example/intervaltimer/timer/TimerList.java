@@ -1,7 +1,6 @@
 package com.example.intervaltimer.timer;
 
 import java.util.*;
-import java.util.List;
 
 class TimerList {
 
@@ -23,10 +22,6 @@ class TimerList {
         timerList.clear();
     }
 
-    boolean isNotEmpty() {
-        return !timerList.isEmpty();
-    }
-
     void addTimerInList(int index, Timer timer) {
         timerList.add(index, timer);
     }
@@ -44,14 +39,13 @@ class TimerList {
         updateIdOfTimersInList();
     }
 
-    void removeTimerFromList(Timer timer) {
+    void removeTimerFromListWhileRunning(Timer timer) {
         timerList.remove(timer);
-        //updateIdOfTimersInList();
     }
 
     private void updateIdOfTimersInList() {
         for(Timer t : timerList) {
-            t.setTimerId(timerList.indexOf(t));
+            t.setId(timerList.indexOf(t));
         }
     }
 }
